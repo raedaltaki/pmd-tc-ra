@@ -2,12 +2,19 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import Button from '../components/common/Button';
 import GlobalContext from '../lib/GlobalContext';
 
 function Step2() {
-  const { register, handleSubmit } = useForm({});
   const state = useContext(GlobalContext);
+
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      email: state.email,
+      phone: state.phone,
+    },
+  });
 
   const router = useRouter();
 
@@ -21,6 +28,11 @@ function Step2() {
 
   return (
     <div style={{ margin: '0 auto', maxWidth: 600 }}>
+      <h3>
+        <Link href="/Step1">
+          <a>Back</a>
+        </Link>
+      </h3>
       <h1 style={{ textAlign: 'center' }}>Contact</h1>
       <motion.div
         animate={{ x: 50 }}

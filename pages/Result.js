@@ -8,7 +8,6 @@ function Result() {
   return (
     <div style={{ margin: '0 auto', maxWidth: 600 }}>
       <h1 style={{ textAlign: 'center' }}>Results</h1>
-      {/* <motion.div initial="hidden" animate="visible" variants={variants} > */}
       <motion.div
         animate={{ scale: 1.5, x: 200, y: 100 }}
         transition={{ duration: 1 }}

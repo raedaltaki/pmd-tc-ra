@@ -2,18 +2,17 @@ import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
-
+import Link from 'next/link';
 import Button from '../components/common/Button';
 import GlobalContext from '../lib/GlobalContext';
 
 function Step3() {
+  const state = useContext(GlobalContext);
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      developer: true,
+      developer: state.developer,
     },
   });
-
-  const state = useContext(GlobalContext);
 
   const router = useRouter();
 
@@ -30,6 +29,11 @@ function Step3() {
 
   return (
     <div style={{ margin: '0 auto', maxWidth: 600 }}>
+      <h3>
+        <Link href="/Step2">
+          <a>Back</a>
+        </Link>
+      </h3>
       <h1 style={{ textAlign: 'center' }}>Developer</h1>
       <motion.div
         animate={{ x: 50 }}
