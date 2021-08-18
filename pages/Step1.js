@@ -1,28 +1,31 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
+import { useQuery, useMutation } from '@apollo/client';
 import Button from '../components/common/Button';
-import GlobalContext from '../lib/GlobalContext';
+import { ADD_DETAILS } from '../graphql/mutations/ADD_DETAILS';
+import { GET_DETAILS } from '../graphql/queries/GET_DETAILS';
 
 function Step1() {
-  const state = useContext(GlobalContext);
+  const [addDetails] = useMutation(ADD_DETAILS);
+  const { data } = useQuery(GET_DETAILS);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      firstName: state.firstName,
-      lastName: state.lastName,
-      address: state.address,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
     },
   });
   const router = useRouter();
   const onSubmit = data => {
-    state.update({
-      ...state,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      address: data.address,
+    addDetails({
+      variables: {
+        ...data,
+      },
     });
+
     router.push({
       pathname: '/Step2',
     });
@@ -35,38 +38,32 @@ function Step1() {
         animate={{ x: 50 }}
         transition={{ type: 'spring', stiffness: 300 }}
       >
-        {' '}
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="firstName">First Name</label>
           <input
+            style={{ marginBottom: '30px' }}
             {...register('firstName', {
               required: 'Please enter your first name.',
             })}
             placeholder="First Name"
-            defaultValue={state.firstName}
           />
-          <br />
-          <br />
           <label htmlFor="lastName">Last Name</label>
           <input
+            style={{ marginBottom: '30px' }}
             {...register('lastName', {
               required: 'Please enter your last name.',
             })}
             placeholder="Last Name"
-            defaultValue={state.lastName}
+            name="lastName"
           />
-          <br />
-          <br />
           <label htmlFor="address">Address</label>
           <input
+            style={{ marginBottom: '30px' }}
             {...register('address', {
               required: 'Please enter your address.',
             })}
             placeholder="Address"
-            defaultValue={state.address}
           />
-          <br />
-          <br />
 
           <motion.div
             drag="y"
@@ -74,12 +71,9 @@ function Step1() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <div>
-              <Button style={{ width: '100%' }} type="submit">
-                {' '}
-                Next{' '}
-              </Button>
-            </div>
+            <Button style={{ width: '100%' }} type="submit">
+              Next
+            </Button>
           </motion.div>
         </form>
       </motion.div>

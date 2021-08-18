@@ -1,25 +1,30 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useQuery, useMutation } from '@apollo/client';
 import Button from '../components/common/Button';
-import GlobalContext from '../lib/GlobalContext';
+import { ADD_DETAILS } from '../graphql/mutations/ADD_DETAILS';
+import { GET_DETAILS } from '../graphql/queries/GET_DETAILS';
 
 function Step3() {
-  const state = useContext(GlobalContext);
+  const [addDetails] = useMutation(ADD_DETAILS);
+  const { data } = useQuery(GET_DETAILS);
+
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      developer: state.developer,
+      developer: data.developer,
     },
   });
 
   const router = useRouter();
 
   const onSubmit = data => {
-    state.update({
-      ...state,
-      developer: data.developer,
+    addDetails({
+      variables: {
+        ...data,
+      },
     });
 
     router.push({
@@ -52,8 +57,6 @@ function Step3() {
             />
             I am a developer
           </label>
-          <br />
-          <br />
 
           <motion.div
             drag="y"
@@ -61,11 +64,9 @@ function Step3() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
           >
-            <div>
-              <Button style={{ width: '100%' }} type="submit">
-                Submit
-              </Button>
-            </div>
+            <Button style={{ width: '100%', marginTop: '30px' }} type="submit">
+              Submit
+            </Button>
           </motion.div>
         </form>
       </motion.div>

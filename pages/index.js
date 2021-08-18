@@ -1,21 +1,24 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { useRouter } from 'next/router';
 import { motion } from 'framer-motion';
+import { useMutation } from '@apollo/client';
 import Button from '../components/common/Button';
-import GlobalContext from '../lib/GlobalContext';
+import { ADD_DETAILS } from '../graphql/mutations/ADD_DETAILS';
 
 function App() {
-  const state = useContext(GlobalContext);
   const router = useRouter();
+  const [addDetails] = useMutation(ADD_DETAILS);
 
-  function StartTest() {
-    state.update({
-      firstName: '',
-      lastName: '',
-      address: '',
-      phone: '',
-      email: '',
-      developer: false,
+  function startTest() {
+    addDetails({
+      variables: {
+        firstName: '',
+        lastName: '',
+        address: '',
+        phone: '',
+        email: '',
+        developer: false,
+      },
     });
     router.push({
       pathname: '/Step1',
@@ -32,12 +35,9 @@ function App() {
         whileHover={{ scale: 1.1 }}
         whileTap={{ scale: 0.9 }}
       >
-        <div>
-          <Button style={{ width: '100%' }} type="buttom" onClick={StartTest}>
-            {' '}
-            Start{' '}
-          </Button>
-        </div>
+        <Button style={{ width: '100%' }} type="buttom" onClick={startTest}>
+          Start
+        </Button>
       </motion.div>
     </div>
   );

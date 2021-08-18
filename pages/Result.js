@@ -1,10 +1,12 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import GlobalContext from '../lib/GlobalContext';
+import { useQuery } from '@apollo/client';
+import { GET_DETAILS } from '../graphql/queries/GET_DETAILS';
 
 function Result() {
-  const state = useContext(GlobalContext);
-  console.log(state);
+  const { data } = useQuery(GET_DETAILS);
+  console.log('Result', data);
+
   return (
     <div style={{ margin: '0 auto', maxWidth: 600 }}>
       <h1 style={{ textAlign: 'center' }}>Results</h1>
@@ -13,12 +15,12 @@ function Result() {
         transition={{ duration: 1 }}
       >
         <h3>
-          {state.firstName} {state.lastName} is {state.developer ? '' : 'not'} a
+          {data.firstName} {data.lastName} is {data.developer ? '' : 'not'} a
           developer
         </h3>
-        <h4>Address: {state.address}</h4>
-        <h4>Email: {state.email}</h4>
-        <h4>Phone: {state.phone}</h4>
+        <h4>Address: {data.address}</h4>
+        <h4>Email: {data.email}</h4>
+        <h4>Phone: {data.phone}</h4>
       </motion.div>
     </div>
   );

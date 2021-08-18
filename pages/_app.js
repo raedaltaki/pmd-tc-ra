@@ -1,10 +1,7 @@
 import { createGlobalStyle } from 'styled-components';
 import { ApolloProvider } from '@apollo/client';
-
-import { useState } from 'react';
-import { useApollo } from '../lib/apolloClient';
-import GlobalContext from '../lib/GlobalContext';
 import DefaultLayout from '../layouts/DefaultLayout';
+import client from '../lib/apolloClient';
 
 const GlobalStyle = createGlobalStyle`
   * {
@@ -98,29 +95,15 @@ const GlobalStyle = createGlobalStyle`
 `;
 
 const App = ({ Component, pageProps }) => {
-  const apolloClient = useApollo(pageProps);
+  // const apolloClient = useApollo(pageProps);
   const Layout = Component.Layout || DefaultLayout;
-  const [state, setState] = useState({
-    firstName: '',
-    lastName: '',
-    address: '',
-    phone: '',
-    email: '',
-    developer: false,
-    update,
-  });
-  function update(data) {
-    setState({ ...state, ...data });
-  }
 
   return (
-    <ApolloProvider client={apolloClient}>
-      <GlobalContext.Provider value={state}>
-        <Layout>
-          <Component {...pageProps} />
-          <GlobalStyle />
-        </Layout>
-      </GlobalContext.Provider>
+    <ApolloProvider client={client}>
+      <Layout>
+        <Component {...pageProps} />
+        <GlobalStyle />
+      </Layout>
     </ApolloProvider>
   );
 };
