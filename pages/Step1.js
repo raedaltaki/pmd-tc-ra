@@ -47,6 +47,7 @@ function Step1() {
             })}
             placeholder="First Name"
           />
+
           <label htmlFor="lastName">Last Name</label>
           <input
             style={{ marginBottom: '30px' }}
@@ -56,6 +57,7 @@ function Step1() {
             placeholder="Last Name"
             name="lastName"
           />
+
           <label htmlFor="address">Address</label>
           <input
             style={{ marginBottom: '30px' }}

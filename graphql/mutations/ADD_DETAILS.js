@@ -1,4 +1,4 @@
-import { gql } from 'graphql-tag';
+import { gql } from '@apollo/client';
 import { GET_DETAILS } from '../queries/GET_DETAILS';
 
 export const ADD_DETAILS = gql`
